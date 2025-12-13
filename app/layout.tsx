@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { Outfit } from "next/font/google";
+import Header from "@/components/common/header";
+import Footer from "@/components/common/footer";
 
 const geistSans = Geist({
   // we use variable, when we do not want this font to be applied for the hole application
@@ -30,7 +32,9 @@ export default function RootLayout({
         // to use geistSans in the hole application use className={`${geistSans.classname} instead
         className={`${outfit.className} antialiased`}
       >
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
