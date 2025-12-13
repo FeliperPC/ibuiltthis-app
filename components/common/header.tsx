@@ -1,6 +1,19 @@
-import { Compass, HomeIcon, SparkleIcon, SparklesIcon, UserIcon } from "lucide-react";
+import {
+  Compass,
+  HomeIcon,
+  SparkleIcon,
+  SparklesIcon,
+  UserIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import {
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  UserButton,
+} from "@clerk/nextjs";
 
 export default function Header() {
   const Logo = () => {
@@ -15,7 +28,6 @@ export default function Header() {
       </Link>
     );
   };
-  const isSignedIn = false;
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop:blur supports-backdrop-filter:bg-background/60">
       <div className="wrapper px-12">
@@ -38,25 +50,21 @@ export default function Header() {
             </Link>
           </nav>
           <div className="flex items-center gap-3">
-            {isSignedIn ? (
-              <>
-                <Button asChild>
-                  <Link href="/submit">
-                    <SparklesIcon className="size-4" />
-                    Submit Project
-                  </Link>
-                </Button>
-                {/** Clerk User */}
-                <Button variant={"ghost"}>
-                  <UserIcon className="size-4" />
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button variant="ghost">Sign In</Button>
-                <Button>Sign Up</Button>
-              </>
-            )}
+            <SignedOut>
+              <SignInButton />
+              <SignUpButton>
+                <Button>Sign up</Button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <Button asChild>
+                <Link href="/submit">
+                  <SparklesIcon className="size-4" />
+                  Submit Project
+                </Link>
+              </Button>
+              <UserButton />
+            </SignedIn>
           </div>
         </div>
       </div>

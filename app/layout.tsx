@@ -4,6 +4,7 @@ import "./globals.css";
 import { Outfit } from "next/font/google";
 import Header from "@/components/common/header";
 import Footer from "@/components/common/footer";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = Geist({
   // we use variable, when we do not want this font to be applied for the hole application
@@ -27,15 +28,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        // to use geistSans in the hole application use className={`${geistSans.classname} instead
-        className={`${outfit.className} antialiased`}
-      >
-        <Header />
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          // to use geistSans in the hole application use className={`${geistSans.classname} instead
+          className={`${outfit.className} antialiased`}
+        >
+          <Header />
+          {children}
+          <Footer />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
