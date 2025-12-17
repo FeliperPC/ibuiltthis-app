@@ -1,24 +1,34 @@
-import { SparklesIcon } from "lucide-react";
+import { Loader2Icon, SparklesIcon } from "lucide-react";
 import { FormField } from "../forms/form-field";
 import { Button } from "../ui/button";
-import { addProduct } from "@/lib/products/product-actions";
+import { addProductAction } from "@/lib/products/product-actions";
+import { useActionState } from "react";
 
-export default function ProductSubmitForm(){
+// Before the server action run this is the inital state, that is the value of state in the hook declaration
+const initialState = {
+  success: false,
+  errors: {},
+  message: "",
+};
 
-  async function handleSubmit(e:FormData){
-    await addProduct(e)
-  }
+export default function ProductSubmitForm() {
+  const [state, formAction, isPending] = useActionState(
+    addProductAction,
+    initialState
+  );
   
+  const {errors} = state
+
   return (
-    <form className="space-y-6" action={handleSubmit}>
-       <FormField
+    <form className="space-y-6" action={formAction}>
+      <FormField
         label="Product Name"
         name="name"
         id="name"
         placeholder="My Awesome Product"
         required
         onChange={() => {}}
-        error=""
+        error={errors?.name}
       />
       <FormField
         label="Slug"
@@ -28,7 +38,7 @@ export default function ProductSubmitForm(){
         required
         onChange={() => {}}
         helperText="URL-friendly version of your product name"
-        error=""
+        error={errors?.slug}
       />
 
       <FormField
@@ -38,7 +48,7 @@ export default function ProductSubmitForm(){
         placeholder="A brief, catchy description"
         required
         onChange={() => {}}
-        error=""
+        error={errors?.tagline}
       />
 
       <FormField
@@ -48,8 +58,8 @@ export default function ProductSubmitForm(){
         placeholder="Tell us more about your product..."
         required
         onChange={() => {}}
-        error=""
         textarea
+        error={errors?.description}
       />
 
       <FormField
@@ -59,7 +69,7 @@ export default function ProductSubmitForm(){
         placeholder="https://yourproduct.com"
         required
         onChange={() => {}}
-        error=""
+        error={errors?.websiteUrl}
         helperText="Enter your product's website or landing page"
       />
       <FormField
@@ -69,11 +79,20 @@ export default function ProductSubmitForm(){
         placeholder="AI, Productivity, SaaS"
         required
         onChange={() => {}}
-        error=""
+        error={errors?.tags}
         helperText="Comma-separated tags (e.g., AI, SaaS, Productivity)"
       />
 
-      <Button className="w-full" size="lg" type="submit"><SparklesIcon className="size-4"/>Submit Product</Button>
+      <Button className="w-full" size="lg" type="submit">
+        {isPending ? (
+          <Loader2Icon className="size-4 animate-spin" />
+        ) : (
+          <>
+            <SparklesIcon className="size-4" />
+            Submit Product
+          </>
+        )}
+      </Button>
     </form>
-  )
+  );
 }
