@@ -3,7 +3,6 @@ import {
   HomeIcon,
   SparkleIcon,
   SparklesIcon,
-  UserIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -12,8 +11,8 @@ import {
   SignInButton,
   SignUpButton,
   SignedIn,
-  UserButton,
 } from "@clerk/nextjs";
+import CustomUserButton from "./custom-user-button";
 
 export default function Header() {
   const Logo = () => {
@@ -63,7 +62,7 @@ export default function Header() {
                   Submit Project
                 </Link>
               </Button>
-              <UserButton />
+              <CustomUserButton />
             </SignedIn>
           </div>
         </div>
