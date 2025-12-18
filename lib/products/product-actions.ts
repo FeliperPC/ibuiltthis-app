@@ -5,24 +5,21 @@ import { productSchema } from "./product-validations";
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import z from "zod";
-
-type FormState = {
-  success: boolean;
-  errors?: Record<string, string[]>;
-  message: string;
-};
+import { FormState } from "@/types";
 
 export const addProductAction = async (
   prevState: FormState,
   formData: FormData
-) => {
+): Promise<FormState> => {
   await new Promise((resolve) => setTimeout(resolve, 5000));
 
   try {
     // authentication
     const { userId } = await auth();
     const user = await currentUser();
-    const userEmail = user ? user.primaryEmailAddress?.emailAddress : "anonymous"
+    const userEmail = user
+      ? user.primaryEmailAddress?.emailAddress
+      : "anonymous";
     if (!userId) {
       return {
         success: false,
@@ -50,7 +47,7 @@ export const addProductAction = async (
     const { name, slug, tagline, tags, websiteUrl, description } =
       validatedData.data;
 
-    const tagsArray = tags ? tags.filter((tag)=>typeof tag==="string") : []
+    const tagsArray = tags ? tags.filter((tag) => typeof tag === "string") : [];
 
     // create request drizzle
     await db.insert(products).values({
@@ -58,7 +55,7 @@ export const addProductAction = async (
       slug,
       description,
       tagline,
-      tags : tagsArray,
+      tags: tagsArray,
       websiteUrl,
       status: "pending",
       submittedBy: userEmail,
@@ -68,20 +65,20 @@ export const addProductAction = async (
     return {
       success: true,
       message: "Product submitted successfully! It will be reviewed soon",
-    }
+    };
   } catch (error) {
     console.log(error);
 
-    if(error instanceof z.ZodError){
+    if (error instanceof z.ZodError) {
       return {
-      success: false,
-      errors: error.flatten().fieldErrors,
-      message: "Validation failed, please check the form",
-    };
+        success: false,
+        errors: error.flatten().fieldErrors,
+        message: "Validation failed, please check the form",
+      };
     }
     return {
       success: false,
-      errors: error,
+      errors: { error: ["Error on submit"] },
       message: "Failed to submit product",
     };
   }

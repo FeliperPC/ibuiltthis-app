@@ -13,7 +13,7 @@ interface FormFieldProps {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => void;
-  error: string;
+  error: string[];
   helperText?: string;
   textarea?: boolean;
 }
@@ -56,7 +56,7 @@ export const FormField = ({
       {helperText && (
         <p className="text-xs text-muted-foreground">{helperText}</p>
       )}
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error.join(", ") && <p className="text-sm text-destructive">{error}</p>}
     </div>
   );
 };
