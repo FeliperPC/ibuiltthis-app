@@ -6,13 +6,13 @@ import { db } from "@/db";
 import { products } from "@/db/schema";
 import z from "zod";
 import { FormState } from "@/types";
+import { eq, sql } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export const addProductAction = async (
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> => {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-
   try {
     // authentication
     const { userId } = await auth();
@@ -80,6 +80,82 @@ export const addProductAction = async (
       success: false,
       errors: { error: ["Error on submit"] },
       message: "Failed to submit product",
+    };
+  }
+};
+
+export const upvoteProductAction = async (productId: number) => {
+  try {
+    const { userId, orgId } = await auth();
+    if (!userId) {
+      return {
+        success: false,
+        message: "You must loggin",
+      };
+    }
+    if (!orgId) {
+      return {
+        success: false,
+        message: "You must be a member of an organization to vote",
+      };
+    }
+
+    await db
+      .update(products)
+      .set({
+        voteCount: sql`GREATEST(0, vote_count +1)`,
+      })
+      .where(eq(products.id, productId));
+    // The featuredToday componnet is cached, with this function bellow it reload the cashe
+    revalidatePath("/"); 
+    return {
+      success: true,
+      message: "Product upvoted successfully",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Failed to upvote product",
+      votecount: 0,
+    };
+  }
+};
+
+export const downvoteProductAction = async (productId: number) => {
+  try {
+    const { userId, orgId } = await auth();
+    if (!userId) {
+      return {
+        success: false,
+        message: "You must loggin",
+      };
+    }
+    if (!orgId) {
+      return {
+        success: false,
+        message: "You must be a member of an organization to vote",
+      };
+    }
+
+    await db
+      .update(products)
+      .set({
+        voteCount: sql`GREATEST(0, vote_count -1)`,
+      })
+      .where(eq(products.id, productId));
+    // The featuredToday componnet is cached, with this function bellow it reload the cashe
+    revalidatePath("/");
+    return {
+      success: true,
+      message: "Product downvoted successfully",
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Failed to downvote product",
+      votecount: 0,
     };
   }
 };
