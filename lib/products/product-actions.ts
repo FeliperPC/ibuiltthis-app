@@ -107,7 +107,7 @@ export const upvoteProductAction = async (productId: number) => {
       })
       .where(eq(products.id, productId));
     // The featuredToday componnet is cached, with this function bellow it reload the cashe
-    revalidatePath("/"); 
+    revalidatePath("/");
     return {
       success: true,
       message: "Product upvoted successfully",
@@ -159,3 +159,11 @@ export const downvoteProductAction = async (productId: number) => {
     };
   }
 };
+
+export async function getProductBySlug(slug: string) {
+  const product = await db
+    .select()
+    .from(products)
+    .where(eq(products.slug, slug));
+  return product[0];
+}
