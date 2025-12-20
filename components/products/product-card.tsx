@@ -10,8 +10,8 @@ import { Badge } from "../ui/badge";
 import { ChevronDownIcon, ChevronUpIcon, StarIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import { Product } from "@/lib/products/types";
 import VotingButtons from "./voting-buttons";
+import { Product } from "@/types";
 
 
 export default function ProductCard({ product }: { product: Product }) {

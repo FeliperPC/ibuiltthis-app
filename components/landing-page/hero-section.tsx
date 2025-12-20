@@ -75,7 +75,7 @@ export default function HeroSection() {
               className="text-base px-8 shadow-lg"
             >
               <Link href={"/explore"}>
-                Share Your Project
+                Explore Projects
                 <ArrowRightIcon className="size-5" />
               </Link>
             </Button>
