@@ -1,7 +1,9 @@
-"use client"
+"use client";
 
 import { UserButton, OrganizationSwitcher } from "@clerk/nextjs";
-import { BuildingIcon } from "lucide-react";
+import { ArrowRight, ArrowRightIcon, Building2Icon, BuildingIcon } from "lucide-react";
+import Link from "next/link";
+import { Button } from "../ui/button";
 
 export default function CustomUserButton() {
   return (
@@ -18,6 +20,18 @@ export default function CustomUserButton() {
             afterCreateOrganizationUrl={"/submit"}
             appearance={{ elements: { rootBox: "w-full" } }}
           />
+        </div>
+      </UserButton.UserProfilePage>
+      <UserButton.UserProfilePage
+        label="Admin"
+        labelIcon={<Building2Icon className="size-4" />}
+        url="/admin"
+      >
+        <div className="p-4 flex gap-4 flex-col">
+          <h2>Admin Panel</h2>
+          <Link href="/admin" className="w-full justify-start">
+            <Button className="w-full justify-start">Go to Admin Panel <ArrowRightIcon className="size-4"/></Button>
+          </Link>
         </div>
       </UserButton.UserProfilePage>
     </UserButton>
