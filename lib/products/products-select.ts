@@ -15,7 +15,7 @@ export async function getFeaturedProducts() {
   return productsData;
 }
 
-export async function getAllProducts() {
+export async function getAllApprovedProducts() {
   const productsData = await db
     .select()
     .from(products)
@@ -24,10 +24,18 @@ export async function getAllProducts() {
   return productsData;
 }
 
+export async function getAllProducts() {
+  const productsData = await db
+    .select()
+    .from(products)
+    .orderBy(desc(products.voteCount));
+  return productsData;
+}
+
 
 export async function getRecentlyLaunchedProducts() {
   await connection() // this function indicate that the rendering should wait the promise to finish
-  const productsData = await getAllProducts();
+  const productsData = await getAllApprovedProducts();
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
