@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckCircleIcon, CheckIcon, XCircleIcon } from "lucide-react";
+import { CheckCircleIcon, XCircleIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   approveProductAction,

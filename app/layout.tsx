@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import "./globals.css";
 import { Outfit } from "next/font/google";
 import Header from "@/components/common/header";
 import Footer from "@/components/common/footer";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const geistSans = Geist({
-  // we use variable, when we do not want this font to be applied for the hole application
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// we use variable, when we do not want this font to be applied for the hole application
 
 const outfit = Outfit({ subsets: ["latin"] });
 

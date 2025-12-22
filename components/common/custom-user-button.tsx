@@ -1,7 +1,7 @@
 "use client";
 
 import { UserButton, OrganizationSwitcher } from "@clerk/nextjs";
-import { ArrowRight, ArrowRightIcon, Building2Icon, BuildingIcon } from "lucide-react";
+import { ArrowRightIcon, Building2Icon, BuildingIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 

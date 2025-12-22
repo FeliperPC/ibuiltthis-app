@@ -5,7 +5,6 @@ import { addProductAction } from "@/lib/products/product-actions";
 import { useActionState } from "react";
 import { FormState } from "@/types";
 import { cn } from "@/lib/utils";
-import { success } from "zod";
 
 // Before the server action run this is the inital state, that is the value of state in the hook declaration
 const initialState: FormState = {
