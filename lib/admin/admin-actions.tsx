@@ -51,3 +51,22 @@ export async function rejectProductAction(productId: Product["id"]) {
     };
   }
 }
+
+export async function removeProductAction(productId: Product["id"]) {
+  try {
+    await db
+      .delete(products)
+      .where(eq(products.id, productId));
+    revalidatePath("/admin");
+    return {
+      success: true,
+      message: "Product deleted successfully",
+    };
+  } catch (error) {
+    console.log("Error deleting product:", error);
+    return {
+      success: false,
+      message: "Failed to delete product",
+    };
+  }
+}

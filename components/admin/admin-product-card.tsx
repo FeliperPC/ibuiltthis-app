@@ -1,3 +1,4 @@
+"use client";
 import { Trash2Icon } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -5,12 +6,17 @@ import { Card, CardDescription, CardFooter, CardTitle } from "../ui/card";
 import { cn } from "@/lib/utils";
 import { Product } from "@/types";
 import AdminActions from "./admin-actions";
+import { removeProductAction } from "@/lib/admin/admin-actions";
+import { useTransition } from "react";
 
-export default function AdminProductCard({
-  product,
-}: {
-  product: Product;
-}) {
+export default function AdminProductCard({ product }: { product: Product }) {
+  const [isPending, startTransition] = useTransition();
+  function handleDelete() {
+    startTransition(async () => {
+      await removeProductAction(product.id);
+    });
+  }
+
   return (
     <Card className="border rounded-lg p-6 bg-background hover:shadow-md transition-shadow">
       <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
@@ -65,9 +71,13 @@ export default function AdminProductCard({
             </div>
           </CardDescription>
           <CardFooter>
-            <Button variant="outline">
+            <Button
+              variant="outline"
+              onClick={handleDelete}
+              disabled={isPending}
+            >
               <Trash2Icon className="size-4" />
-              Delete
+              {isPending ? <>Deleting ...</> : <>Delete</>}
             </Button>
           </CardFooter>
         </div>
